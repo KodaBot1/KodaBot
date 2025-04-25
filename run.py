@@ -2,16 +2,14 @@ import os
 import sys
 import yaml
 import pandas as pd
-from dotenv import load_dotenv
 from openai import OpenAI
 from string import Template
 import random
 
-# === Load API key ===
-load_dotenv(override=True)  # Ensures Render's environment variables are used if .env is missing
+# === Load API key from environment (Render & local .env)
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    project=os.getenv("OPENAI_PROJECT_ID")
+    api_key=os.environ.get("OPENAI_API_KEY"),  # ✅ Works with real env vars
+    project=os.environ.get("OPENAI_PROJECT_ID")  # Optional: remove if not used
 )
 
 # === Load restaurant folder name ===
