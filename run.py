@@ -8,7 +8,7 @@ from string import Template
 import random
 
 # === Load API key ===
-load_dotenv()
+load_dotenv(override=True)  # Ensures Render's environment variables are used if .env is missing
 client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
     project=os.getenv("OPENAI_PROJECT_ID")
