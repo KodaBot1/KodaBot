@@ -2,15 +2,20 @@ import os
 import sys
 import yaml
 import pandas as pd
-from dotenv import load_dotenv
 from openai import OpenAI
 from string import Template
 import random
+from dotenv import load_dotenv  # ✅ Load env vars
 
-# === Load API key from environment (Render & local .env)
-load_dotenv(override=True)
+load_dotenv()  # ✅ Load .env (local) or use Render environment
 
-# === Load restaurant folder name ===
+# === Initialize OpenAI client once ===
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),
+    project=os.environ.get("OPENAI_PROJECT_ID")  # Optional
+)
+
+# === Validate restaurant folder name ===
 if len(sys.argv) < 2:
     print("❌ Usage: python3 run.py [restaurant-folder-name]")
     sys.exit(1)
@@ -18,18 +23,19 @@ if len(sys.argv) < 2:
 restaurant = sys.argv[1]
 base_path = f"restaurants/{restaurant}"
 
-# === Load brain files ===
-with open(f"{base_path}/config.yaml") as f:
-    config = yaml.safe_load(f)
-
-with open(f"{base_path}/faq.yaml") as f:
-    faq_data = yaml.safe_load(f)
-
-with open(f"{base_path}/menu.txt") as f:
-    menu_text = f.read()
-
-with open(f"{base_path}/website.txt") as f:
-    website_text = f.read()
+# === Load restaurant files ===
+try:
+    with open(f"{base_path}/config.yaml") as f:
+        config = yaml.safe_load(f)
+    with open(f"{base_path}/faq.yaml") as f:
+        faq_data = yaml.safe_load(f)
+    with open(f"{base_path}/menu.txt") as f:
+        menu_text = f.read()
+    with open(f"{base_path}/website.txt") as f:
+        website_text = f.read()
+except Exception as e:
+    print(f"❌ Error loading restaurant files: {e}")
+    sys.exit(1)
 
 # === Format FAQs into text block ===
 faq_block = "\n".join([
@@ -44,13 +50,13 @@ except Exception as e:
     print(f"❌ Error reading test_cases.csv: {e}")
     sys.exit(1)
 
-# === Safety filter keywords ===
-NEGATIVE_TRIGGERS = config["safety"]["negative_keywords"]
-ABUSIVE_TRIGGERS = config["safety"]["profanity_triggers"]
+# === Safety keywords ===
+NEGATIVE_TRIGGERS = config["safety"].get("negative_keywords", [])
+ABUSIVE_TRIGGERS = config["safety"].get("profanity_triggers", [])
 
-# === Run test cases ===
+# === Process each test case ===
 for _, row in df.iterrows():
-    if "name" not in row:
+    if "name" not in row or pd.isna(row["name"]):
         print("⚠️ Skipping row — missing 'name'")
         continue
 
@@ -62,13 +68,7 @@ for _, row in df.iterrows():
         print(f"⛔ Skipping {row['name']} due to abusive language.")
         continue
 
-    # === Create OpenAI client here inside the loop ===
-    client = OpenAI(
-        api_key=os.environ.get("OPENAI_API_KEY"),
-        project=os.environ.get("OPENAI_PROJECT_ID")
-    )
-
-    # === Choose tone flavor and message ===
+    # === Pick a flavor and template ===
     flavor = random.choice(config.get("flavors", []))
     outbound_templates = config["mode"]["outbound_templates"].get(flavor, [])
 
@@ -82,13 +82,12 @@ for _, row in df.iterrows():
     print("\nSending:", user_input)
     print("Tone Flavor:", flavor)
 
-    # === Get flavor style ===
+    # === Get style info ===
     flavor_style = config.get("flavor_styles", {}).get(flavor, {})
     tone_description = flavor_style.get("tone", "")
     max_items = flavor_style.get("max_items", 2)
     bullet_style = flavor_style.get("bullet_style", True)
 
-    # === Optional closer ===
     closer = random.choice(config.get("closers", []))
 
     # === Craft system prompt ===
@@ -121,12 +120,17 @@ FAQs:
 {faq_block}
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_input}
-        ]
-    )
+    # === Send request ===
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_input}
+            ]
+        )
 
-    print("Response:\n", response.choices[0].message.content)
+        print("Response:\n", response.choices[0].message.content)
+
+    except Exception as e:
+        print(f"❌ Error calling OpenAI: {e}")
