@@ -5,9 +5,7 @@ import pandas as pd
 from openai import OpenAI
 from string import Template
 import random
-from dotenv import load_dotenv  # ✅ Load env vars
-
-load_dotenv()  # ✅ Load .env (local) or use Render environment
+import csv
 
 # === Initialize OpenAI client once ===
 client = OpenAI(
@@ -53,6 +51,9 @@ except Exception as e:
 # === Safety keywords ===
 NEGATIVE_TRIGGERS = config["safety"].get("negative_keywords", [])
 ABUSIVE_TRIGGERS = config["safety"].get("profanity_triggers", [])
+
+# === Prepare CSV output ===
+output_rows = []
 
 # === Process each test case ===
 for _, row in df.iterrows():
@@ -130,7 +131,25 @@ FAQs:
             ]
         )
 
-        print("Response:\n", response.choices[0].message.content)
+        assistant_reply = response.choices[0].message.content.strip()
+
+        print("Response:\n", assistant_reply)
+
+        # === Save to output rows ===
+        output_rows.append({
+            "Name": row["name"],
+            "Flavor": flavor,
+            "User_Input": user_input,
+            "Bot_Response": assistant_reply
+        })
 
     except Exception as e:
         print(f"❌ Error calling OpenAI: {e}")
+
+# === Save outputs to CSV ===
+if output_rows:
+    output_df = pd.DataFrame(output_rows)
+    output_df.to_csv("output_responses.csv", index=False, encoding="utf-8")
+    print("\n✅ All responses saved to output_responses.csv")
+else:
+    print("\n⚠️ No responses were generated.")
