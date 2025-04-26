@@ -2,15 +2,13 @@ import os
 import sys
 import yaml
 import pandas as pd
+from dotenv import load_dotenv
 from openai import OpenAI
 from string import Template
 import random
 
 # === Load API key from environment (Render & local .env)
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),  # ✅ Works with real env vars
-    project=os.environ.get("OPENAI_PROJECT_ID")  # Optional: remove if not used
-)
+load_dotenv(override=True)
 
 # === Load restaurant folder name ===
 if len(sys.argv) < 2:
@@ -63,6 +61,12 @@ for _, row in df.iterrows():
     if any(trigger in name for trigger in ABUSIVE_TRIGGERS):
         print(f"⛔ Skipping {row['name']} due to abusive language.")
         continue
+
+    # === Create OpenAI client here inside the loop ===
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
+        project=os.environ.get("OPENAI_PROJECT_ID")
+    )
 
     # === Choose tone flavor and message ===
     flavor = random.choice(config.get("flavors", []))
