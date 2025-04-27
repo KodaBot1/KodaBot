@@ -6,6 +6,11 @@ from openai import OpenAI
 from string import Template
 import random
 import csv
+from dotenv import load_dotenv
+
+# === Load local .env ONLY if running locally ===
+if os.environ.get("RENDER") != "true":  # Render sets this automatically
+    load_dotenv()
 
 # === Initialize OpenAI client once ===
 client = OpenAI(
