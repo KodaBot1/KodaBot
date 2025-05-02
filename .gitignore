@@ -1,1 +1,2 @@
 .env\n.env.*\n__pycache__/\noutput_responses.csv\n.DS_Store
+.DS_Store\nsales.yaml\napp.py
