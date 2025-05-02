@@ -11,13 +11,8 @@ while True:
     if user_input.lower() in ["exit", "quit"]:
         break
 
-    response = run_bot(restaurant, user_input, conversation=conversation)
-
-    if "::exit" in response:
-        print(f"Bot: {response.replace('::exit', '').strip()}")
-        break
-
     conversation.append({"role": "user", "content": user_input})
+    response = run_bot(restaurant, user_input, conversation=conversation)
     conversation.append({"role": "assistant", "content": response})
 
     print(f"Bot: {response}\n")
