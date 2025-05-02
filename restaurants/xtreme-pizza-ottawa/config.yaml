@@ -3,31 +3,34 @@ persona: >
   You assist customers with anything related to the menu, orders, delivery, pickup, hours, and deals.
   Be clear, concise, and helpful. Never mention that you’re an AI. Represent the business naturally and professionally.
 
+
 mode:
   outbound_templates:
-    "🍾 Bundle push":
-      - "Hey ${name}, it’s Xtreme Pizza Ottawa — got some fresh combos for ya. Want a few recs?"
-      - "Yo ${name}, Xtreme Pizza texting you — new deals people are loving. Wanna check?"
-      - "Hey ${name}, the team at Xtreme Pizza Ottawa here — top combos just dropped. Want a peek?"
-      - "Just dropped some 🔥 combos, ${name} — want in?"
-      - "${name}, folks are grabbing these combos tonight — wanna see what’s hot?"
+    "📞 Call-to-action heavy":
+      - "Hey ${name}, it’s Xtreme Pizza Ottawa — hungry? Tap here: https://mottawa.xtremepizzaottawa.com/menu"
+      - "Xtreme Pizza Ottawa here — menu’s here when you’re ready: https://mottawa.xtremepizzaottawa.com/menu"
+      - "This is Xtreme Pizza texting you — take a look if you’re in the mood for something good: https://mottawa.xtremepizzaottawa.com/menu"
+      - "Hey ${name}, it’s Xtreme Pizza Ottawa — thinking about food? Here’s the spot: https://mottawa.xtremepizzaottawa.com/menu"
 
-    "🔥 Quick hit":
-      - "It’s Xtreme Pizza Ottawa, ${name} — quick one: this deal’s hot right now:"
-      - "Xtreme Pizza Ottawa here — try this top pick, ${name}:"
-      - "Hey ${name}, our best-seller’s moving fast today. Want in?"
-      - "What’s up ${name}? Try this before it’s gone:"
+    "🍾 Bundle push":
+      - "Hey ${name}, it’s Xtreme Pizza Ottawa — want a quick look at the top combos tonight?"
+      - "${name}, Xtreme Pizza texting you — people are loving these deals right now."
+      - "What’s up ${name}? Xtreme Pizza Ottawa here with a couple of combos you might like."
+      - "Hey ${name}, the crew at Xtreme Pizza just dropped some new deals — wanna check?"
 
     "😎 Friendly suggestion":
-      - "Hey ${name}, the team at Xtreme Pizza Ottawa here — got a few chill picks. Want one?"
-      - "What’s good ${name}? If you’re hungry, we’ve got some tasty options. Wanna check?"
-      - "Yo ${name}, if you're in the mood, I can show you what folks are loving tonight."
-      - "${name}, feel like something tasty? Got a few options you might like."
+      - "Hey ${name}, it’s Xtreme Pizza Ottawa — got a few tasty picks if you’re deciding."
+      - "${name}, Xtreme Pizza here — if you're hungry I got a suggestion or two for you."
+      - "Hey you ${name}, it’s Xtreme Pizza Ottawa — we've got some deals for you, need help picking something?"
+      - "What’s good ${name}? Got a couple of recommendations if you're figuring out dinner. Can't go wrong ordering at Xtreme Pizza Ottawa"
 
-    "📞 Call-to-action heavy":
-      - "Hey ${name}, it’s Xtreme Pizza Ottawa — these deals go fast. Take a look: https://mottawa.xtremepizzaottawa.com/menu"
-      - "Dinner rush is on, ${name}. Hit the link now and lock it in: https://mottawa.xtremepizzaottawa.com/menu"
-      - "Xtreme Pizza here, ${name} — hungry? Tap this: https://mottawa.xtremepizzaottawa.com/menu"
+    "🔥 Quick hit":
+      - "Hey ${name}, it’s Xtreme Pizza Ottawa — this one’s a go-to for a reason."
+      - "Xtreme Pizza Ottawa here, ${name} — got some deals for you if you're in the mood."
+      - "Hey ${name}, we’ve got some good options at Xtreme Pizza Ottawa. You in?"
+      - "Hey hey ${name}, Xtreme Pizza Ottawa here — a fresh deal just landed you might like."
+
+
 
 steps:
   - Greet the user warmly and quickly

@@ -7,6 +7,7 @@ from string import Template
 import random
 import csv
 from dotenv import load_dotenv
+import re
 
 # === Load local .env ONLY if running locally ===
 if os.environ.get("RENDER") != "true":  # Render sets this automatically
@@ -18,7 +19,7 @@ client = OpenAI(
     project=os.environ.get("OPENAI_PROJECT_ID")  # Optional
 )
 
-def run_bot(restaurant, message, conversation=None):
+def run_bot(restaurant, message, conversation=None, name_hint=None):
     base_path = f"restaurants/{restaurant}"
     with open(f"{base_path}/config.yaml") as f:
         config = yaml.safe_load(f)
@@ -34,11 +35,10 @@ def run_bot(restaurant, message, conversation=None):
         for item in faq_data.get("faq", [])
     ])
 
-    # Choose a default flavor or rotate
     flavor = "😎 Friendly suggestion"
     templates = config["mode"]["outbound_templates"].get(flavor, [])
     template = Template(random.choice(templates))
-    user_input = template.safe_substitute({"name": "Customer"})
+    user_input = template.safe_substitute({"name": name_hint or "Customer"})
 
     flavor_style = config.get("flavor_styles", {}).get(flavor, {})
     tone_description = flavor_style.get("tone", "")
@@ -46,9 +46,22 @@ def run_bot(restaurant, message, conversation=None):
     bullet_style = flavor_style.get("bullet_style", True)
     closer = random.choice(config.get("closers", []))
 
+    # Check if intro already included
+    contains_intro = any(
+        phrase in user_input.lower()
+        for phrase in ["xtreme pizza texting", "xtreme pizza ottawa", "xtreme pizza here"]
+    )
+
+    intro_line = (
+        "Avoid repeating the business name if the message already includes it."
+        if contains_intro else
+        "Always introduce yourself naturally (e.g., 'It’s Xtreme Pizza Ottawa', 'Xtreme Pizza here')"
+    )
+
     system_prompt = f"""
 You are a fast, helpful, and friendly team member from Xtreme Pizza Ottawa.
 
+Customer name: {name_hint or 'Customer'}
 Today's tone: {flavor}
 Style guide: {tone_description}
 Max combos: {max_items} | Bullet style: {bullet_style}
@@ -60,10 +73,11 @@ RESPONSE RULES:
 - Call-to-action heavy: Guide to checkout or phone clearly, but avoid sounding pushy.
 
 GENERAL RULES:
-- Always introduce yourself naturally (e.g., "It’s Xtreme Pizza Ottawa", "Xtreme Pizza here")
+- {intro_line}
+- Keep responses short and tight — no essay-length replies
 - Do NOT stack hype, emojis, and CTAs in one sentence.
 - Sound like a real teammate texting between orders.
-- Keep replies short unless listing combos.
+- Use bullets if listing items and bullet_style = True
 - Always use: https://mottawa.xtremepizzaottawa.com/menu
 - End with: {closer}
 
@@ -94,7 +108,19 @@ FAQs:
         messages=messages
     )
 
-    return response.choices[0].message.content.strip()
+    assistant_reply = response.choices[0].message.content.strip()
+
+    # === Trim long responses ===
+    MAX_LENGTH = 500
+    if len(assistant_reply) > MAX_LENGTH:
+        assistant_reply = assistant_reply[:MAX_LENGTH].rsplit('.', 1)[0] + "."
+
+    # === Remove double emojis if overdone ===
+    emoji_count = assistant_reply.count("😎") + assistant_reply.count("🍕") + assistant_reply.count("🔥")
+    if emoji_count > 2:
+        assistant_reply = re.sub(r"[😎🍕🔥]", "", assistant_reply, count=emoji_count - 1)
+
+    return assistant_reply
 
 # === If run directly from terminal ===
 if __name__ == "__main__":
@@ -124,11 +150,11 @@ if __name__ == "__main__":
             print("⚠️ Skipping row — missing 'name'")
             continue
 
-        name = row["name"].lower()
-        if any(trigger in name for trigger in NEGATIVE_TRIGGERS):
+        name = row["name"].strip()
+        if any(trigger in name.lower() for trigger in NEGATIVE_TRIGGERS):
             print(f"⛔ Skipping {row['name']} due to opt-out keyword detected.")
             continue
-        if any(trigger in name for trigger in ABUSIVE_TRIGGERS):
+        if any(trigger in name.lower() for trigger in ABUSIVE_TRIGGERS):
             print(f"⛔ Skipping {row['name']} due to abusive language.")
             continue
 
@@ -140,17 +166,17 @@ if __name__ == "__main__":
             continue
 
         template = Template(random.choice(outbound_templates))
-        user_input = template.safe_substitute(row.to_dict())
+        user_input = template.safe_substitute({"name": name})
 
         print("\nSending:", user_input)
         print("Tone Flavor:", flavor)
 
-        response = run_bot(restaurant, user_input)
+        response = run_bot(restaurant, user_input, name_hint=name)
 
         print("Response:\n", response)
 
         output_rows.append({
-            "Name": row["name"],
+            "Name": name,
             "Flavor": flavor,
             "User_Input": user_input,
             "Bot_Response": response
