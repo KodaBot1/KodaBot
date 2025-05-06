@@ -1,2 +1,5 @@
 .DS_Store\n.env\n.env.*\nsales.yaml\.env
 
+.env
+.env.rtf
+.env.save
