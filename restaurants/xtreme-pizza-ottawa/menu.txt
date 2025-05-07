@@ -1,0 +1,450 @@
+xtreme_pizza_ottawa_menu:
+  appetizers:
+    - name: Xtreme Platter
+      description: Zucchini, chicken fingers, onion rings, fries, breaded shrimps
+      price: 19.99
+    - name: Cheese Sticks
+      size: 8 pcs
+      price: 12.99
+    - name: Jalapeno Slammers
+      size: 6 pcs
+      price: 13.99
+    - name: Zucchini
+      price: 13.99
+    - name: Garlic Bread
+      variations:
+        - type: Regular
+          price: 6.99
+        - type: With Cheese
+          price: 7.99
+        - type: With Cheese & Bacon
+          price: 8.99
+    - name: Hamburger
+      description: Lettuce, tomatoes, pickles, ketchup, mayo
+      price: 7.99
+    - name: Cheeseburger
+      description: Lettuce, tomatoes, pickles, ketchup, mayo
+      price: 8.99
+    - name: Bacon Cheeseburger
+      description: Lettuce, tomatoes, pickles, ketchup, mayo
+      price: 9.99
+    - name: Nachos
+      description: Green peppers, onions, green olives
+      price: 16.99
+    - name: Super Nachos
+      description: Ground beef, green peppers, onions, green olives
+      price: 17.99
+    - name: Xtreme Nachos
+      description: Chicken, green peppers, onions, green olives
+      price: 17.99
+    - name: Fries
+      sizes:
+        - size: Small
+          price: 6.99
+        - size: Large
+          price: 8.99
+    - name: Onion Rings
+      sizes:
+        - size: Small
+          price: 7.99
+        - size: Large
+          price: 9.99
+
+  poutine:
+    - name: Poutine
+      description: Cheese curds and gravy
+      sizes:
+        - size: Small
+          price: 8.99
+        - size: Large
+          price: 11.99
+    - name: Italian Poutine
+      description: Mozzarella cheese and meat sauce
+      sizes:
+        - size: Small
+          price: 9.99
+        - size: Large
+          price: 12.99
+    - name: Canadian Poutine
+      description: Cheese curds, chicken, bacon, gravy
+      sizes:
+        - size: Small
+          price: 10.99
+        - size: Large
+          price: 13.99
+    - name: Donair Poutine
+      description: Mozzarella cheese, donair meat, sweet sauce
+      sizes:
+        - size: Small
+          price: 10.99
+        - size: Large
+          price: 13.99
+
+  wings:
+    sauces: [Red Hot, Sweet Heat, Honey Garlic, Mild, Medium, Suicide]
+    items:
+      - name: Chicken Wings
+        sizes:
+          - size: 10 pcs
+            price: 14.99
+          - size: 20 pcs
+            price: 27.99
+          - size: 30 pcs
+            price: 36.99
+      - name: Boneless Dippers
+        sizes:
+          - size: 10 pcs
+            price: 16.99
+          - size: 20 pcs
+            price: 29.99
+          - size: 30 pcs
+            price: 38.99
+
+  pizzas:
+    note: Gluten-free crust available for medium size only (+$4.00)
+    build_your_own:
+      - name: Plain Pizza
+        sizes:
+          - size: Small
+            price: 13.99
+          - size: Medium
+            price: 19.99
+          - size: Large
+            price: 25.99
+          - size: X-Large
+            price: 31.99
+      - name: 1 Topping
+        sizes:
+          - size: Small
+            price: 14.99
+          - size: Medium
+            price: 21.49
+          - size: Large
+            price: 27.99
+          - size: X-Large
+            price: 34.49
+      - name: 2 Toppings
+        sizes:
+          - size: Small
+            price: 15.99
+          - size: Medium
+            price: 22.99
+          - size: Large
+            price: 29.99
+          - size: X-Large
+            price: 36.99
+      - name: 3 Toppings
+        sizes:
+          - size: Small
+            price: 16.99
+          - size: Medium
+            price: 24.49
+          - size: Large
+            price: 31.99
+          - size: X-Large
+            price: 39.49
+    specialty_pizzas:
+      - name: Hawaiian
+        description: Ham, pineapple
+        sizes:
+          - size: Small
+            price: 15.99
+          - size: Medium
+            price: 22.99
+          - size: Large
+            price: 29.99
+          - size: X-Large
+            price: 36.99
+      - name: Canadian
+        description: Pepperoni, mushrooms, bacon strips
+        sizes:
+          - size: Small
+            price: 16.99
+          - size: Medium
+            price: 24.49
+          - size: Large
+            price: 31.99
+          - size: X-Large
+            price: 39.49
+      - name: Combination
+        description: Pepperoni, mushrooms, green peppers
+        sizes:
+          - size: Small
+            price: 16.99
+          - size: Medium
+            price: 24.49
+          - size: Large
+            price: 31.99
+          - size: X-Large
+            price: 39.49
+      - name: Meat Lovers
+        description: Pepperoni, ham, sausage, bacon strips
+        sizes:
+          - size: Small
+            price: 17.99
+          - size: Medium
+            price: 25.99
+          - size: Large
+            price: 33.99
+          - size: X-Large
+            price: 41.99
+      - name: house_special
+    description: "Pepperoni, mushrooms, green peppers, onions, green olives, bacon strips"
+    prices:
+      small: 18.99
+      medium: 27.49
+      large: 35.99
+      x_large: 44.49
+  vegetarian:
+    description: "Mushrooms, green peppers, onions, olives, tomatoes"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  chicken:
+    description: "Chicken, green peppers, onions, black olives"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  donair:
+    description: "Donair meat, mushrooms, green peppers, onions"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  steak:
+    description: "Steak, mushrooms, green peppers, onions"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  greek:
+    description: "Green peppers, onions, hot peppers, feta cheese, tomatoes, black olives"
+    prices:
+      small: 18.99
+      medium: 27.49
+      large: 35.99
+      x_large: 44.49
+  italian:
+    description: "Italian sausage, onions, green peppers, tomatoes"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  hot_spicy:
+    description: "Italian sausage, hot peppers, onions, ham, BBQ sauce on top"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  new_york_style:
+    description: "Extra thin crust, pepperoni on top"
+    prices:
+      small: 17.99
+      medium: 25.99
+      large: 33.99
+      x_large: 41.99
+  xtreme_supreme:
+    description: "Pepperoni, mushrooms, green peppers, ham, sausage, olives, onions, bacon"
+    prices:
+      small: 19.99
+      medium: 28.99
+      large: 37.99
+      x_large: 46.99
+
+donairs_and_shawarma:
+  donair_sandwich:
+    sizes:
+      small: 9.99
+      large: 14.99
+  donair_platter:
+    sizes:
+      small: 14.99
+      large: 18.99
+  shawarma_sandwich:
+    sizes:
+      small: 9.99
+      large: 14.99
+  shawarma_platter:
+    sizes:
+      small: 14.99
+      large: 18.99
+  two_large_donairs_deal: 26.99
+  two_large_shawarma_deal: 26.99
+
+hot_subs:
+  breaded_chicken_sub: 14.99
+  spicy_breaded_chicken_sub: 14.99
+  steak_sub:
+    description: "Mushrooms and onions"
+    price: 15.99
+  steak_and_pepperoni_sub: 15.99
+  meatball_sub:
+    description: "Tomato sauce and cheese only"
+    price: 14.99
+  bacon_sub: 14.99
+  veggie_sub:
+    description: "Mushrooms, olives, onions, green pepper"
+    price: 13.99
+  donair_sub:
+    description: "Donair meat with your choice of sweet or garlic sauce"
+    price: 14.99
+  xtreme_sub:
+    description: "Pepperoni, ham, salami, turkey, bacon"
+    price: 16.99
+  pizza_sub:
+    description: "Pizza sauce, pepperoni, mushrooms, green pepper, cheese"
+    price: 14.99
+  club_sub: 15.99
+
+cold_subs:
+  chicken_sub: 15.99
+  ham_sub: 15.99
+  turkey_sub: 15.99
+  cold_cut_sub:
+    description: "Turkey, ham, salami"
+    price: 15.99
+
+platters:
+  hamburger_platter: 14.99
+  cheeseburger_platter: 15.99
+  bacon_cheeseburger_platter: 16.99
+  chicken_burger_platter: 15.99
+  crispy_chicken_burger_platter: 16.99
+  club_sandwich_platter:
+    description: "With turkey"
+    price: 16.99
+  chicken_club_platter: 16.99
+  fish_and_chips_platter:
+    description: "With tartar sauce and gravy"
+    price: 16.99
+  chicken_finger_platter: 16.99
+  shrimp_in_a_basket_platter: 16.99
+
+salads:
+  garden_salad:
+    description: "Lettuce, tomatoes, onions, green peppers, green olives"
+    sizes:
+      small: 9.99
+      large: 12.99
+  greek_salad:
+    description: "Lettuce, tomatoes, onions, green peppers, black olives, feta cheese"
+    sizes:
+      small: 12.99
+      large: 15.99
+  caesar_salad:
+    description: "Lettuce, croutons, bacon bits"
+    sizes:
+      small: 10.99
+      large: 13.99
+  chicken_caesar_salad:
+    description: "Chicken breast, lettuce, croutons, bacon bits"
+    sizes:
+      small: 13.99
+      large: 16.99
+  xtreme_salad:
+    description: "Lettuce, tomatoes, green olives, onions, croutons, cheese, sliced turkey"
+    sizes:
+      small: 13.99
+      large: 16.99
+
+pasta:
+  spaghetti:
+    description: "With meat sauce"
+    price: 14.99
+  lasagna: 15.99
+  chicken_parmigiana: 19.99
+
+twin_pizzas:
+  two_toppings:
+    small: 26.99
+    medium: 36.99
+    large: 45.99
+  four_toppings:
+    small: 28.99
+    medium: 38.99
+  six-toppings:
+    small: 30.99
+    medium: 40.99
+    large: 51.99
+
+xtreme_pizza_deals:
+  - deal_1_large_pizza_wings:
+      description: 1 large pizza with 3 toppings, 15 wings, 3 cans of pop
+      price: "$45.99"
+  - deal_2_medium_pizza_wings:
+      description: 1 medium pizza with 3 toppings, 12 wings, 2 cans of pop
+      price: "$38.99"
+  - xtreme_3s:
+      description: 3 small pizzas with 3 toppings each, large fries, 3 dipping sauces, 3 cans of pop
+      price: "$45.99"
+
+pasta_deals:
+  - two_spaghetti_with_2_cans_of_pop:
+      description: 2 Spaghetti with 2 Cans of Pop
+      price: "$26.99"
+  - two_lasagna_with_2_cans_of_pop:
+      description: 2 Lasagna with 2 Cans of Pop
+      price: "$26.99"
+
+xtreme_sub_deal:
+  - two_subs_and_small_fries:
+      description: Any 2 subs and small fries
+      price: "$29.99"
+
+desserts:
+  - chocolate_cheesecake:
+      price: "$7.99"
+  - strawberry_cheesecake:
+      price: "$7.99"
+
+drinks:
+  - pepsi:
+      can: "$1.50"
+      "591ml": "$2.99"
+      "2L": "$4.50"
+  - diet_pepsi:
+      can: "$1.50"
+      "591ml": "$2.99"
+      "2L": "$4.50"
+  - pepsi_max:
+      can: "$1.50"
+  - 7_up:
+      can: "$1.50"
+      "591ml": "$2.99"
+      "2L": "$4.50"
+  - ginger_ale:
+      can: "$1.50"
+      "591ml": "$2.99"
+      "2L": "$4.50"
+  - orange_crush:
+      can: "$1.50"
+  - grape_crush:
+      can: "$1.50"
+  - cream_soda:
+      can: "$1.50"
+  - brisk:
+      can: "$1.50"
+  - dr_pepper:
+      can: "$1.50"
+  - mountain_dew:
+      can: "$1.50"
+  - root_beer:
+      can: "$1.50"
+  - aquafina:
+      "591ml": "$2.99"
+  - snapple_bottled_juice:
+      flavors:
+        - strawberry_kiwi: "$3.25"
+        - peach: "$3.25"
+        - ice_tea: "$3.25"
+        - mango: "$3.25"
+        - lemonade: "$3.25"
+        - raspberry: "$3.25"
