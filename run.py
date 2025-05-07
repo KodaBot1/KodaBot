@@ -10,18 +10,20 @@ from dotenv import load_dotenv
 import re
 
 # === Load local .env ONLY if running locally ===
-if os.environ.get("RENDER") != "true":  # Render sets this automatically
+if os.environ.get("RENDER") != "true":
     load_dotenv()
 
 # === Initialize OpenAI client once ===
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
-    project=os.environ.get("OPENAI_PROJECT_ID")  # Optional
+    project=os.environ.get("OPENAI_PROJECT_ID")
 )
 
 def run_bot(restaurant, message, conversation=None, name_hint=None):
     base_path = f"restaurants/{restaurant}"
-    with open(f"{base_path}/config.yaml") as f:
+    config_file = f"{base_path}/{restaurant}.config.yaml"
+
+    with open(config_file) as f:
         config = yaml.safe_load(f)
     with open(f"{base_path}/faq.yaml") as f:
         faq_data = yaml.safe_load(f)
@@ -46,7 +48,6 @@ def run_bot(restaurant, message, conversation=None, name_hint=None):
     bullet_style = flavor_style.get("bullet_style", True)
     closer = random.choice(config.get("closers", []))
 
-    # Check if intro already included
     contains_intro = any(
         phrase in user_input.lower()
         for phrase in ["xtreme pizza texting", "xtreme pizza ottawa", "xtreme pizza here"]
@@ -94,14 +95,11 @@ FAQs:
     if any(term in lower_msg for term in config["safety"].get("negative_keywords", [])):
         return config["safety"].get("polite_opt_out", "No problem! We won’t message again.") + " ::exit"
 
-    messages = [
-        {"role": "system", "content": system_prompt}
-    ]
+    messages = [{"role": "system", "content": system_prompt}]
+    messages.append({"role": "user", "content": message})
 
     if conversation:
-        messages.extend(conversation)
-    else:
-        messages.append({"role": "user", "content": message})
+        messages = messages[:1] + conversation
 
     response = client.chat.completions.create(
         model="gpt-4o",
@@ -110,25 +108,25 @@ FAQs:
 
     assistant_reply = response.choices[0].message.content.strip()
 
-    # === Trim long responses ===
     MAX_LENGTH = 500
     if len(assistant_reply) > MAX_LENGTH:
         assistant_reply = assistant_reply[:MAX_LENGTH].rsplit('.', 1)[0] + "."
 
-    # === Remove double emojis if overdone ===
     emoji_count = assistant_reply.count("😎") + assistant_reply.count("🍕") + assistant_reply.count("🔥")
     if emoji_count > 2:
         assistant_reply = re.sub(r"[😎🍕🔥]", "", assistant_reply, count=emoji_count - 1)
 
     return assistant_reply
 
-# === If run directly from terminal ===
+# === CLI Testing ===
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("❌ Usage: python3 run.py [restaurant-folder-name]")
         sys.exit(1)
 
     restaurant = sys.argv[1]
+    base_path = f"restaurants/{restaurant}"
+    config_path = f"{base_path}/{restaurant}.config.yaml"
 
     try:
         df = pd.read_csv("test_cases.csv", encoding="utf-8")
@@ -136,8 +134,7 @@ if __name__ == "__main__":
         print(f"❌ Error reading test_cases.csv: {e}")
         sys.exit(1)
 
-    base_path = f"restaurants/{restaurant}"
-    with open(f"{base_path}/config.yaml") as f:
+    with open(config_path) as f:
         config = yaml.safe_load(f)
 
     NEGATIVE_TRIGGERS = config["safety"].get("negative_keywords", [])
