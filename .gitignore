@@ -1,2 +1,6 @@
-.DS_Store\n.env\n.env.*\nsales.yaml\.env
+# Ignore macOS junk files
+.DS_Store
 
+# Ignore all .env-related files
+.env
+.env.*
